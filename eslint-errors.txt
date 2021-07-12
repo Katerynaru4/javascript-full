@@ -1,4 +1,5 @@
-Unexpected var
-Expected '===' and instead saw '=='
-Unary operator '++' used
-Return statement should not contain assignment
+запрещено использовать var
+используйте строгое сравнение
+найдены необьявленные переменные
+не используйте ++ оператор
+не используйте присваивание в return
