@@ -1,0 +1,4 @@
+Unexpected var
+Expected '===' and instead saw '=='
+Unary operator '++' used
+Return statement should not contain assignment
