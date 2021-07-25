@@ -1,18 +1,9 @@
-export const finishList = () => {
-  const list = document.querySelector('.list');
-  const special = document.querySelector('.special');
-
-  const listItem1 = document.createElement('li');
-  listItem1.textContent = '1';
-  const listItem4 = document.createElement('li');
-  listItem4.textContent = '4';
-  const listItem6 = document.createElement('li');
-  listItem6.textContent = '6';
-  const listItem8 = document.createElement('li');
-  listItem8.textContent = '8';
-
-  list.prepend(listItem1);
-  list.append(listItem8);
-  special.before(listItem4);
-  special.after(listItem6);
+export const finishForm = () => {
+  const loginForm = document.querySelector('.login-form');
+  const nameInput = document.createElement('input');
+  nameInput.setAttribute('type', 'text');
+  nameInput.setAttribute('name', 'login');
+  loginForm.prepend(nameInput);
+  const passwordInput = document.querySelector('[name="password"]');
+  passwordInput.setAttribute('type', 'password');
 };
