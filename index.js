@@ -1,6 +1,5 @@
-const btn = document.querySelector('.single-use-btn');
-const clickHandler = () => {
-  console.log('clicked');
-  btn.removeEventListener('click', clickHandler);
+const body = document.querySelector('body');
+const handleClick = (e) => {
+  console.log(e.target.textContent);
 };
-btn.addEventListener('click', clickHandler);
+body.addEventListener('click', handleClick);
