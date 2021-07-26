@@ -1,7 +1,4 @@
-const btns = [...document.querySelectorAll('.btn')];
-const handleClick = (el) => {
-  console.log(el.target.textContent);
-};
-btns.forEach((button) => {
-  button.addEventListener('click', handleClick);
+const textInput = document.querySelector('.text-input');
+textInput.addEventListener('change', (event) => {
+  console.log(event.target.value);
 });
