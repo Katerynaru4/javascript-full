@@ -1,6 +1,5 @@
-const searchBtn = document.querySelector('.search__btn');
-const searchInput = document.querySelector('.search__input');
-
-searchBtn.addEventListener('click', () => {
-  console.log(searchInput.value);
-});
+const btn = document.querySelector('.single-use-btn');
+const clickHandler = () => {
+  console.log('clicked');
+};
+btn.addEventListener('click', clickHandler, { once: true });
