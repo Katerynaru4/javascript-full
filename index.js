@@ -1,4 +1,7 @@
-const checkbox = document.querySelector('.task-status');
-checkbox.addEventListener('change', (event) => {
-  console.log(event.target.checked);
-});
+const paginationPages = document.querySelectorAll('.pagination__page');
+const handleClick = (event) => {
+  console.log(event.target.dataset.pageNumber);
+};
+[...paginationPages].forEach((button) =>
+  button.addEventListener('click', handleClick)
+);
