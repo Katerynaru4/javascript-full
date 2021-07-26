@@ -1,4 +1,4 @@
-const textInput = document.querySelector('.text-input');
-textInput.addEventListener('change', (event) => {
-  console.log(event.target.value);
+const checkbox = document.querySelector('.task-status');
+checkbox.addEventListener('change', (event) => {
+  console.log(event.target.checked);
 });
