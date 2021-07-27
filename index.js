@@ -1,61 +1,39 @@
-const arenaElem = document.querySelector('.arena');
+const months = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
-const generateNumbersArray = (from, to) => {
-  const arr = [];
-  for (let i = from; i <= to; i++) arr.push(i);
-  return arr;
+export const studentsBirthDays = (students) => {
+  const resultObj = {};
+
+  students.forEach((person) => {
+    const month = months[new Date(person.birthDate).getMonth()];
+    if (!resultObj.hasOwnProperty(month)) {
+      resultObj[month] = [person.name];
+    } else {
+      resultObj[month].push(person.name);
+      resultObj[month].sort(
+        (a, b) => new Date(b.birthDate) - new Date(a.birthDate)
+      );
+    }
+  });
+
+  return resultObj;
 };
 
-const getLineSeats = () =>
-  generateNumbersArray(1, 10)
-    .map(
-      (seatNumber) =>
-        `<div
-       class="sector__seat"
-      data-seat-number="${seatNumber}">
-      </div>`
-    )
-    .join('');
-
-const getSectorLines = () => {
-  const seatsString = getLineSeats();
-  return generateNumbersArray(1, 10)
-    .map(
-      (lineNumber) =>
-        `<div class="sector__line"
-      data-line-number="${lineNumber}"
-    >${seatsString}
-    </div>`
-    )
-    .join('');
-};
-
-const renderArena = () => {
-  const linesString = getSectorLines();
-  const sectorsString = generateNumbersArray(1, 3)
-    .map(
-      (sectorNumber) =>
-        `<div class="sector"
-      data-sector-number="${sectorNumber}"
-     >${linesString}</div>`
-    )
-    .join('');
-  arenaElem.innerHTML = sectorsString;
-};
-renderArena();
-
-const boardSelectedSeat = document.querySelector('.board__selected-seat');
-
-const onSeatSelect = (event) => {
-  const isSeat = event.target.classList.contains('sector__seat');
-
-  if (!isSeat) return;
-
-  const seatNumber = event.target.dataset.seatNumber;
-  const lineNumber = event.target.closest('.sector__line').dataset.lineNumber;
-  const sectorNumber = event.target.closest('.sector').dataset.sectorNumber;
-
-  boardSelectedSeat.textContent = `S ${sectorNumber} - L ${lineNumber} - S ${seatNumber}`;
-};
-
-arenaElem.addEventListener('click', onSeatSelect);
+const students = [
+  { name: 'Tom', birthDate: '01/15/2010' },
+  { name: 'Ben', birthDate: '01/17/2008' },
+  { name: 'Sam', birthDate: '03/15/2010' },
+];
+console.log(studentsBirthDays(students));
