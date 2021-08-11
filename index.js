@@ -40,7 +40,6 @@ async function getUserInfo(users) {
   return res;
 }
 
-export const getMostActiveDevs = (...users) =>
-  Promise.resolve(getUserInfo(users));
+export const getMostActiveDevs = (...users) => getUserInfo(users);
 
 getMostActiveDevs(obj1, obj2, obj3);
