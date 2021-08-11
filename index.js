@@ -41,6 +41,6 @@ async function getUserInfo(users) {
 }
 
 export const getMostActiveDevs = (...users) =>
-  Promise.resolve(getUserInfo(users)).then((data) => console.log(data));
+  Promise.resolve(getUserInfo(users));
 
 getMostActiveDevs(obj1, obj2, obj3);
