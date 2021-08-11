@@ -1,48 +1,54 @@
 .page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   font-family: Arial, Helvetica, sans-serif;
-}
-
-.arena {
   display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
 }
 
-.sector {
+.user {
   display: flex;
   flex-direction: column;
-  background-color: coral;
-  margin: 16px;
-}
-
-.sector__line {
-  display: flex;
-  height: 20px;
-  width: 200px;
+  margin: auto;
   align-items: center;
-  justify-content: space-around;
+}
+.user__info {
+  text-align: center;
+  font-size: 24px;
+  margin: 32px;
 }
 
-.sector__seat {
-  height: 16px;
-  width: 16px;
-  background-color: aqua;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
-  cursor: pointer;
+.user__avatar {
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
 }
 
-.board {
-  height: 100px;
-  width: 200px;
-  background-color: goldenrod;
+.user__name {
+  font-weight: 700;
+}
+
+.user__location {
+  opacity: 0.5;
+}
+
+.name-form {
+  margin: 32px auto;
+}
+.name-form__input {
+  height: 32px;
+  border: 3px solid #ccc;
   border-radius: 8px;
-  color: white;
-  font-size: 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  text-transform: uppercase;
+  flex: 1;
+  outline: none;
+}
+
+.btn {
+  height: 40px;
+  min-width: 64px;
+  border: 3px solid #ccc;
+  outline: none;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-left: 16px;
 }

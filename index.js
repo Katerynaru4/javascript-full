@@ -1,39 +1,23 @@
-const months = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
+const showBtn = document.querySelector('.name-form__btn');
+const input = document.querySelector('.name-form__input');
 
-export const studentsBirthDays = (students) => {
-  const resultObj = {};
+const avatar = document.querySelector('.user__avatar');
+const username = document.querySelector('.user__name');
+const userlocation = document.querySelector('.user__location');
 
-  students.forEach((person) => {
-    const month = months[new Date(person.birthDate).getMonth()];
-    if (!resultObj.hasOwnProperty(month)) {
-      resultObj[month] = [person.name];
-    } else {
-      resultObj[month].push(person.name);
-      resultObj[month].sort(
-        (a, b) => new Date(b.birthDate) - new Date(a.birthDate)
-      );
-    }
-  });
-
-  return resultObj;
+const fetchRequest = (userName) => {
+  fetch(`https://api.github.com/users/${userName}`)
+    .then((response) => response.json())
+    .then((response) => {
+      username.textContent = response.name;
+      userlocation.textContent = '' ? '' : `from ${response.location}`;
+      avatar.src = response.avatar_url;
+    });
 };
 
-const students = [
-  { name: 'Tom', birthDate: '01/15/2010' },
-  { name: 'Ben', birthDate: '01/17/2008' },
-  { name: 'Sam', birthDate: '03/15/2010' },
-];
-console.log(studentsBirthDays(students));
+const getName = () => {
+  const userName = input.value;
+  fetchRequest(userName);
+};
+
+showBtn.addEventListener('click', () => getName());
