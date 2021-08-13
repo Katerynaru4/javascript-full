@@ -43,7 +43,7 @@ function getUserInfo() {
     })
     .then((res) => {
       name.textContent = res.name;
-      location.textContent = res.location;
+      location.textContent = res.location ? `from ${res.location}` : '';
       avatar.src = res.avatar_url;
       getRepos(res.repos_url);
     })
