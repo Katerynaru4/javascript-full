@@ -1,52 +1,56 @@
-const baseUrl = 'https://61166547d98aef0017fe29cd.mockapi.io/us ersForm';
+const avatar = document.querySelector('.user__avatar');
+const name = document.querySelector('.user__name');
+const location = document.querySelector('.user__location');
+const showBtn = document.querySelector('.name-form__btn');
+const nameInput = document.querySelector('.name-form__input');
+const repoList = document.querySelector('.repo-list');
+const spinner = document.querySelector('.spinner');
 
-const submitBtnElem = document.querySelector('.submit-button');
-const loginFormElem = document.querySelector('.login-form');
-const InputFormElems = document.querySelectorAll('.form-input');
-const emailInputElem = document.querySelector('.form-input[name="email"]');
-const nameInputElem = document.querySelector('.form-input[name="name"]');
-const passwordInputElem = document.querySelector(
-  '.form-input[name="password"]'
-);
-const errorTextElem = document.querySelector('.error-text');
+avatar.src = 'https://avatars3.githubusercontent.com/u10001';
 
-const onSubmitForm = (e) => {
-  e.preventDefault();
+function getRepos(url) {
+  spinner.classList.remove('spinner_hidden');
 
-  const newUser = {
-    email: emailInputElem.value,
-    name: nameInputElem.value,
-    password: passwordInputElem.value,
-  };
-
-  fetch(baseUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-    },
-    body: JSON.stringify(newUser),
+  fetch(url, {
+    method: 'GET',
   })
     .then((response) => {
-      if (response.status !== 201) {
-        throw new Error(response);
+      if (response.status === 200) {
+        return response.json();
       }
-      return response.json();
+
+      throw new Error('Failed to load data');
     })
-    .then((response) => alert(JSON.stringify(response)))
-    .then(() => {
-      [...InputFormElems].map((el) => {
-        el.value = '';
+    .then((data) => {
+      spinner.classList.add('spinner_hidden');
+
+      data.map((repo) => {
+        const repoNameElem = `<li class="repo-list__item">${repo.name}<li/>`;
+        repoList.innerHTML += repoNameElem;
       });
     })
-    .catch(() => {
-      errorTextElem.textContent = 'Failed to create user';
+    .catch((err) => alert(err));
+}
+function getUserInfo() {
+  fetch(`https://api.github.com/users/${nameInput.value}`, {
+    method: 'GET',
+  })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error('Failed to load data');
+    })
+    .then((res) => {
+      name.textContent = res.name;
+      location.textContent = res.location;
+      avatar.src = res.avatar_url;
+      getRepos(res.repos_url);
+    })
+    .catch((err) => alert(err))
+    .finally(() => {
+      nameInput.value = '';
     });
-};
+}
 
-const onChangeInput = (e) => {
-  errorTextElem.textContent = '';
-  submitBtnElem.disabled = !loginFormElem.reportValidity();
-};
-
-loginFormElem.addEventListener('submit', onSubmitForm);
-loginFormElem.addEventListener('input', onChangeInput);
+showBtn.addEventListener('click', getUserInfo);
