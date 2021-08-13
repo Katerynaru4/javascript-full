@@ -39,7 +39,7 @@ const onSubmitForm = (e) => {
       });
     })
     .catch(() => {
-      errorTextElem.textContent = new Error('Failed to create user');
+      errorTextElem.textContent = 'Failed to create user';
     });
 };
 
