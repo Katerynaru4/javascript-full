@@ -1,4 +1,4 @@
-const baseUrl = 'https://61166547d98aef0017fe29cd.mockapi.io/usersForm';
+const baseUrl = 'https://61166547d98aef0017fe29cd.mockapi.io/us ersForm';
 
 const submitBtnElem = document.querySelector('.submit-button');
 const loginFormElem = document.querySelector('.login-form');
@@ -26,7 +26,12 @@ const onSubmitForm = (e) => {
     },
     body: JSON.stringify(newUser),
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.status !== 201) {
+        throw new Error(response);
+      }
+      return response.json();
+    })
     .then((response) => alert(JSON.stringify(response)))
     .then(() => {
       [...InputFormElems].map((el) => {
