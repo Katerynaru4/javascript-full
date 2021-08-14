@@ -1,56 +1,38 @@
-const avatar = document.querySelector('.user__avatar');
-const name = document.querySelector('.user__name');
-const location = document.querySelector('.user__location');
-const showBtn = document.querySelector('.name-form__btn');
-const nameInput = document.querySelector('.name-form__input');
-const repoList = document.querySelector('.repo-list');
-const spinner = document.querySelector('.spinner');
+import { fetchUserData, fetchRepositiries } from './gateways.js';
+import { renderUserData } from './user.js';
+import { renderRepos, cleanReposList } from './repos.js';
+import { showSpinner, hideSpinner } from './spinner.js';
 
-avatar.src = 'https://avatars3.githubusercontent.com/u10001';
+const defaultUser = {
+  avatar_url: 'https://avatars3.githubusercontent.com/u10001',
+  name: '',
+  location: '',
+};
 
-function getRepos(url) {
-  spinner.classList.remove('spinner_hidden');
+renderUserData(defaultUser);
 
-  fetch(url, {
-    method: 'GET',
-  })
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      }
+const showBtnElem = document.querySelector('.name-form__btn');
+const userNameInputElem = document.querySelector('.name-form__input');
 
-      throw new Error('Failed to load data');
+const onSearchUser = () => {
+  showSpinner();
+  cleanReposList();
+  const userName = userNameInputElem.value;
+  fetchUserData(userName)
+    .then((userData) => {
+      renderUserData(userData);
+      return userData.repos_url;
     })
-    .then((data) => {
-      spinner.classList.add('spinner_hidden');
-
-      data.map((repo) => {
-        const repoNameElem = `<li class="repo-list__item">${repo.name}<li/>`;
-        repoList.innerHTML += repoNameElem;
-      });
+    .then((url) => fetchRepositiries(url))
+    .then((reposList) => {
+      renderRepos(reposList);
     })
-    .catch((err) => alert(err));
-}
-function getUserInfo() {
-  fetch(`https://api.github.com/users/${nameInput.value}`, {
-    method: 'GET',
-  })
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      }
-      throw new Error('Failed to load data');
+    .catch((err) => {
+      alert(err.message);
     })
-    .then((res) => {
-      name.textContent = res.name;
-      location.textContent = res.location ? `from ${res.location}` : '';
-      avatar.src = res.avatar_url;
-      getRepos(res.repos_url);
-    })
-    .catch((err) => alert(err))
     .finally(() => {
-      nameInput.value = '';
+      hideSpinner();
     });
-}
+};
 
-showBtn.addEventListener('click', getUserInfo);
+showBtnElem.addEventListener('click', onSearchUser);
