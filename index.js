@@ -1,33 +1,42 @@
-import { fetchUserData, fetchRepositiries } from './gateways.js';
-import { renderUserData } from './user.js';
-import { renderRepos, cleanReposList } from './repos.js';
-import { showSpinner, hideSpinner } from './spinner.js';
+const addImage = (url, callback) => {
+  const img = document.createElement('img');
+  img.setAttribute('alt', 'User avatar');
+  img.src = url;
 
-const defaultUser = {
-  avatar_url: 'https://avatars3.githubusercontent.com/u10001',
-  name: '',
-  location: '',
+  const pageElem = document.querySelector('.page');
+  pageElem.append(img);
+
+  const onImageLoaded = () => {
+    const { width, height } = img;
+    callback(null, { width, height });
+  };
+
+  const onImageLoadError = () => callback('Image load failed');
+
+  img.addEventListener('load', onImageLoaded);
+
+  img.addEventListener('error', onImageLoadError);
 };
 
-renderUserData(defaultUser);
+export const addImageV2 = (url) =>
+  new Promise((resolve, reject) => {
+    const onImageLoadedCallback = (error, imgElem) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      const { width, height } = imgElem;
+      const sizeElem = document.querySelector('.image-size');
+      sizeElem.textContent = `${width} x ${height}`;
+      resolve({ width, height });
+    };
+    addImage(url, onImageLoadedCallback);
+  });
 
-const showBtnElem = document.querySelector('.name-form__btn');
-const userNameInputElem = document.querySelector('.name-form__input');
+// examples
 
-const onSearchUser = async () => {
-  try {
-    showSpinner();
-    cleanReposList();
-    const userName = userNameInputElem.value;
-    const userData = await fetchUserData(userName);
-    renderUserData(userData);
-    const reposList = await fetchRepositiries(userData.repos_url);
-    renderRepos(reposList);
-  } catch (err) {
-    alert(err.message);
-  } finally {
-    hideSpinner();
-  }
-};
-
-showBtnElem.addEventListener('click', onSearchUser);
+// addImageV2(
+//   'https://www.vets4pets.com/siteassets/species/cat/cat-close-up-of-side-profile.jpg'
+// )
+//   .then((data) => console.log(data)) // ==> { width: 200, height: 100 }
+//   .catch((error) => console.log(error)); // ==> 'Image load failed'
